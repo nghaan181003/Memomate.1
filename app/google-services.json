@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "808884483807",
+    "project_id": "memomate-d3c15",
+    "storage_bucket": "memomate-d3c15.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808884483807:android:059b3b51c6c9c1606d1b6a",
+        "android_client_info": {
+          "package_name": "com.example.memomate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVg2NRxhb2O7HMUWsDfBgAmzZTy5Si2JQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

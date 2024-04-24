@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/memomate"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Base.Theme.MemoMate"
+        tools:targetApi="31">
+        <activity
+            android:name=".Activties.SplashActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activties.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.CreateSetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.Setting_Password"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.Editable"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.VisibleTo"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.CreateClassActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.ChangePassWordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.ClassDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.FinishedFlashcardsModeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.DashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.CreateFolderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.FolderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.StackFlashCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.StudySetDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activties.IntroActivity"
+            android:exported="true">
+
+        </activity>
+    </application>
+
+</manifest>
