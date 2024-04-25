@@ -23,25 +23,26 @@
             android:text="Delete Account"
             android:textStyle="bold"
             android:textSize="18dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
 
             />
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:text="Are you sure you want to delete your account?"
-            android:layout_marginBottom="5dp"
+
             />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="right"
+            android:gravity="center"
             android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             >
 
 
@@ -49,14 +50,14 @@
                 android:id="@+id/btnCancel"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:backgroundTint="#7E8187"
                 android:text="Cancel" />
             <Button
                 android:id="@+id/btnYes"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:backgroundTint="#FF0000"
                 android:text="Yes"
                 android:layout_marginLeft="10dp"/>

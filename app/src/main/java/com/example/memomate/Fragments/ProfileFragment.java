@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment {
             return;
         }
         txtUserName1.setText(user.getDisplayName());
-        txtUserName2.setText(user.getDisplayName());
+        //txtUserName2.setText(user.getDisplayName());
         //Uri avatar = user.getPhotoUrl();
         edtEmail.setText(user.getEmail());
     }
@@ -137,7 +137,7 @@ public class ProfileFragment extends Fragment {
         if (user != null) {
             for (UserInfo profile : user.getProviderData()) {
                 txtUserName1.setText(profile.getDisplayName());
-                txtUserName2.setText(profile.getDisplayName());
+                //txtUserName2.setText(profile.getDisplayName());
                 edtEmail.setText(profile.getEmail());
                 //Uri avatar = profile.getPhotoUrl();
             }

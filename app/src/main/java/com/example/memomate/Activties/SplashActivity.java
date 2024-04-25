@@ -9,6 +9,8 @@ import android.widget.ProgressBar;
 
 import com.example.memomate.R;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -23,8 +25,16 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 finish();
-                Intent i = new Intent(SplashActivity.this, IntroActivity.class);
-                startActivity(i);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    Intent i = new Intent(SplashActivity.this, DashboardActivity.class);
+                    startActivity(i);
+                } else {
+                    Intent i = new Intent(SplashActivity.this, IntroActivity.class);
+                    startActivity(i);
+                }
+
+
             }
         }, 2000);
     }
