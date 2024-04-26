@@ -82,7 +82,7 @@ public class ProfileFragment extends Fragment {
                 showDialogChangUserName(v);
             }
         });
-        txtUserName2.setText(txtUserName1.getText().toString());
+        //txtUserName2.setText(txtUserName1.getText().toString());
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment {
             return;
         }
         txtUserName1.setText(user.getDisplayName());
-        //txtUserName2.setText(user.getDisplayName());
+        txtUserName2.setText(user.getDisplayName());
         //Uri avatar = user.getPhotoUrl();
         edtEmail.setText(user.getEmail());
     }

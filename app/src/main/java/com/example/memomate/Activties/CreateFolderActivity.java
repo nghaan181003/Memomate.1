@@ -45,7 +45,7 @@ public class CreateFolderActivity extends AppCompatActivity {
             }
         });
 
-        btnSave.setVisibility(View.GONE);
+        btnSave.setVisibility(View.INVISIBLE);
         edtTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -61,7 +61,7 @@ public class CreateFolderActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (TextUtils.isEmpty(s))
                 {
-                    btnSave.setVisibility(View.GONE);
+                    btnSave.setVisibility(View.INVISIBLE);
                 }
                 else btnSave.setVisibility(View.VISIBLE);
             }
