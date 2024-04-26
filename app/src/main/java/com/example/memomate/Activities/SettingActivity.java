@@ -1,4 +1,4 @@
-package com.example.memomate.Activties;
+package com.example.memomate.Activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

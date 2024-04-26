@@ -1,8 +1,7 @@
-package com.example.memomate.Activties;
+package com.example.memomate.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,28 +13,18 @@ import android.widget.TextView;
 
 import com.example.memomate.R;
 
-public class CreateFolderActivity extends AppCompatActivity {
-    TextView btnSave, txtNewFolder;
+public class CreateClassActivity extends AppCompatActivity {
+    TextView btnSave;
     ImageButton btnClose;
-    EditText edtTitle, edtDescription;
+    EditText edtClassTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_folder);
+        setContentView(R.layout.activity_create_class);
         getFormWidgets();
         addEvents();
     }
-
-    public void getFormWidgets()
-    {
-        btnClose = findViewById(R.id.btnClose);
-        btnSave = findViewById(R.id.btnSave);
-        edtTitle = findViewById(R.id.edtTitle);
-        edtDescription = findViewById(R.id.edtDescription);
-        txtNewFolder = findViewById(R.id.txtNewFolder);
-    }
-
     public void  addEvents()
     {
         btnClose.setOnClickListener(new View.OnClickListener() {
@@ -44,9 +33,8 @@ public class CreateFolderActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
         btnSave.setVisibility(View.INVISIBLE);
-        edtTitle.addTextChangedListener(new TextWatcher() {
+        edtClassTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -59,23 +47,19 @@ public class CreateFolderActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(s))
+                if(TextUtils.isEmpty(s))
                 {
                     btnSave.setVisibility(View.INVISIBLE);
                 }
                 else btnSave.setVisibility(View.VISIBLE);
             }
         });
-
-
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Xu ly truyen du lieu ve FolderActivity
-                finish();
-            }
-        });
     }
+    public void getFormWidgets()
+    {
+        btnClose = findViewById(R.id.btnClose);
+        btnSave = findViewById(R.id.btnSave);
+        edtClassTitle = findViewById(R.id.edtClassTitle);
 
-
+    }
 }

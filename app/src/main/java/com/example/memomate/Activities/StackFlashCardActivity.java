@@ -1,4 +1,4 @@
-package com.example.memomate.Activties;
+package com.example.memomate.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.memomate.Adapters.CardStackAdapter;
 import com.example.memomate.Models.FlashCard;

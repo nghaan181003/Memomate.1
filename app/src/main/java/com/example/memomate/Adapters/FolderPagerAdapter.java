@@ -1,8 +1,6 @@
 package com.example.memomate.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 
-import com.bumptech.glide.load.engine.Initializable;
-import com.example.memomate.Activties.FolderActivity;
-import com.example.memomate.Activties.StudySetDetailActivity;
 import com.example.memomate.Models.Folder;
 import com.example.memomate.R;
 

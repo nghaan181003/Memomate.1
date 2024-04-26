@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activties.CreateFolderActivity"
+    tools:context=".Activities.CreateFolderActivity"
     android:background="#FFFFFF">
 
     <LinearLayout

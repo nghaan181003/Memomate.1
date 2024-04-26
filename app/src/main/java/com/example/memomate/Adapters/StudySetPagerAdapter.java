@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.example.memomate.Activties.StudySetDetailActivity;
+import com.example.memomate.Activities.StudySetDetailActivity;
 import com.example.memomate.Models.StudySet;
 import com.example.memomate.R;
 

@@ -1,6 +1,8 @@
 package com.example.memomate.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +24,7 @@ public class TabFoldersFragment extends Fragment {
     private RecyclerView folderRecyclerView;
     private FolderRecyclerViewAdapter folderAdapter;
     private LinearLayoutManager layoutManager;
-
+    private ArrayList<Folder> listFolder = new ArrayList<>();
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -44,12 +46,26 @@ public class TabFoldersFragment extends Fragment {
 
     private ArrayList<Folder> getListFolder()
     {
-        ArrayList<Folder> data = new ArrayList<>();
-        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
-        data.add(new Folder("Xin chao", 2, R.drawable.images, "thanhhoa11"));
-        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
-        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
-        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
-        return data;
+
+        listFolder.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+        listFolder.add(new Folder("Xin chao", 2, R.drawable.images, "thanhhoa11"));
+        listFolder.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+        listFolder.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+        listFolder.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+        return listFolder;
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == 12) && (resultCode == 42))
+        {
+            String title = data.getStringExtra("setTitle");
+            int currentPositon = data.getIntExtra("currentPos", 0);
+            Log.d("Class", "Received class title from intent: " + title);
+            Log.d("Class", "Received class position from intent: " + currentPositon);
+            listFolder.get(currentPositon).setTitle(title);
+            folderAdapter.notifyDataSetChanged();
+
+        }
     }
 }

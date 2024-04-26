@@ -1,5 +1,6 @@
-package com.example.memomate.Activties;
+package com.example.memomate.Activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -18,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.memomate.Adapters.StudySetAdapter;
+import com.example.memomate.Fragments.TabFoldersFragment;
 import com.example.memomate.Models.FlashCard;
 import com.example.memomate.Models.StudySet;
 import com.example.memomate.R;
@@ -30,6 +33,7 @@ public class FolderActivity extends AppCompatActivity {
     ArrayList<StudySet> studySets = new ArrayList<>();
     CardView cardAddSet;
     TextView txtTitleFolder, txtQuantity;
+    int currentPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,7 @@ public class FolderActivity extends AppCompatActivity {
         populateDummyFlashcards();
         initView();
         createRecyclerView();
+        getIntentFromFolderAdapter();
     }
 
     private void initView()
@@ -46,6 +51,14 @@ public class FolderActivity extends AppCompatActivity {
         btnReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(FolderActivity.this, TabFoldersFragment.class);
+                String title = txtTitleFolder.getText().toString();
+                int position = currentPos;
+                i.putExtra("setTitle", title);
+                i.putExtra("currentPos", position);
+                Log.d("Folder", "Received title from intent: " + position);
+                Log.d("Folder", "Received title from intent: " + title);
+                setResult(42, i);
                 finish();
             }
         });
@@ -102,7 +115,11 @@ public class FolderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(FolderActivity.this, CreateFolderActivity.class);
-                startActivity(i);
+                String title = txtTitleFolder.getText().toString();
+                //Log.d("Folder", "Received title from intent: " + title);
+                i.putExtra("getTitle", title);
+                startActivityForResult(i, 70);
+                dialog.dismiss();
             }
         });
 
@@ -147,5 +164,24 @@ public class FolderActivity extends AppCompatActivity {
 
         studySets.add(new StudySet("Toan", R.drawable.han, "ngochandethuong", flashCards1));
         studySets.add(new StudySet("AV", R.drawable.han, "ngochandethuong", flashCards2));
+    }
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode==70) && (resultCode==71))
+        {
+            String newTitle = data.getStringExtra("getNewTitle");
+            txtTitleFolder.setText(newTitle);
+        }
+    }
+    public void getIntentFromFolderAdapter() {
+        Intent i = getIntent();
+        String title = i.getStringExtra("getTitle");
+        int position = i.getIntExtra("position", 0);
+        String userName = i.getStringExtra("getUserName");
+        int img = i.getIntExtra("getAvatar", 0);
+        txtTitleFolder.setText(title);
+        //avatarUser.setImageResource(img);
+        //txtUserName.setText(userName);
+        currentPos = position;
     }
 }

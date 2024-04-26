@@ -1,4 +1,4 @@
-package com.example.memomate.Activties;
+package com.example.memomate.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +22,6 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.memomate.Adapters.FlashCardAdapter;
 import com.example.memomate.Adapters.FlipCardAdapter;

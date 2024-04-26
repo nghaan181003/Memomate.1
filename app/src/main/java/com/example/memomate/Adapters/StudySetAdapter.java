@@ -3,20 +3,17 @@ package com.example.memomate.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.memomate.Activties.FolderActivity;
-import com.example.memomate.Activties.StudySetDetailActivity;
+import com.example.memomate.Activities.StudySetDetailActivity;
 import com.example.memomate.Models.StudySet;
 import com.example.memomate.R;
 

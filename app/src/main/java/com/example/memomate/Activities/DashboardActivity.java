@@ -1,4 +1,4 @@
-package com.example.memomate.Activties;
+package com.example.memomate.Activities;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import com.example.memomate.Adapters.NotificationAdapter;
 import com.example.memomate.Fragments.ClassFragment;

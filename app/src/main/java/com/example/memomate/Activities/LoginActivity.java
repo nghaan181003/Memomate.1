@@ -1,4 +1,4 @@
-package com.example.memomate.Activties;
+package com.example.memomate.Activities;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -24,7 +24,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.memomate.R;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
@@ -126,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 } catch (ApiException e) {
-                    e.printStackTrace();
+                    Log.d("TAG Login failed", e.getLocalizedMessage());
                 }
             }
         });
@@ -147,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 // No Google Accounts found. Just continue presenting the signed-out UI.
-                                Log.d("TAG", e.getLocalizedMessage());
+                                Log.d("TAG Login failed", e.getLocalizedMessage());
                             }
                         });
             }

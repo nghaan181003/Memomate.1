@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activties.CreateSetActivity"
+    tools:context=".Activities.CreateSetActivity"
     android:orientation="vertical"
     android:background="#FFFFFF"
     android:id="@+id/layout_create_set">

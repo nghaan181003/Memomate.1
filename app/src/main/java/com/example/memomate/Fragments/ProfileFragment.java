@@ -21,8 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import com.example.memomate.Activties.ChangePassWordActivity;
-import com.example.memomate.Activties.IntroActivity;
+import com.example.memomate.Activities.ChangePassWordActivity;
+import com.example.memomate.Activities.IntroActivity;
 import com.example.memomate.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

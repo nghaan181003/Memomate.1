@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activties.FolderActivity"
+    tools:context=".Activities.FolderActivity"
     android:background="#FFFFFF">
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"

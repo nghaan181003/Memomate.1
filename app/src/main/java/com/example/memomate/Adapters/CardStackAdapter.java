@@ -6,20 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.memomate.Activties.StackFlashCardActivity;
 import com.example.memomate.Models.FlashCard;
-import com.example.memomate.Models.FlashcardsMode;
 import com.example.memomate.R;
 import com.wajahatkarim3.easyflipview.EasyFlipView;
-import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
-import com.yuyakaido.android.cardstackview.CardStackListener;
-import com.yuyakaido.android.cardstackview.CardStackView;
-import com.yuyakaido.android.cardstackview.Direction;
 
 import java.util.List;
 

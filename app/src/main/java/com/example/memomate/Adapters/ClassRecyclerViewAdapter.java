@@ -11,8 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.memomate.Activties.ClassDetailActivity;
-import com.example.memomate.Activties.FolderActivity;
+import com.example.memomate.Activities.FolderActivity;
 import com.example.memomate.Models.Class;
 import com.example.memomate.R;
 

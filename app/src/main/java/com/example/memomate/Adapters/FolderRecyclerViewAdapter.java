@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.memomate.Activties.FolderActivity;
+import com.example.memomate.Activities.FolderActivity;
 import com.example.memomate.Models.Folder;
 import com.example.memomate.R;
 
