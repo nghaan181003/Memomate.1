@@ -249,7 +249,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful())
                         {
-                            //Toast.makeText(LoginActivity.this, "send to email", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                            dialog.dismiss();
+                            showDialogSuccess();
                         }
                     }
                 });
@@ -259,6 +261,36 @@ public class LoginActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private void showDialogSuccess()
+    {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_success);
+        Window window = dialog.getWindow();
+        if (window == null)
+        {
+            return;
+        }
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        window.setWindowAnimations(R.style.BottomDialogAnimation);
+
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = Gravity.CENTER;
+        window.setAttributes(windowAttributes);
+        dialog.setCancelable(true);
+
+        Button btnOk = dialog.findViewById(R.id.btnOk);
+        TextView txtNotification = dialog.findViewById(R.id.txtNotification);
+        txtNotification.setText("Check your mail to reset password");
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
     private void show_dialog_login_failed()
     {
         final Dialog dialog = new Dialog(this);
