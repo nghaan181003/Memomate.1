@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -47,6 +48,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         getFormWidget();
         addEvents();
+        getIntentGG();
     }
     private void getFormWidget(){
         // bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_nav);
