@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.example.memomate.Adapters.CardAdapter;
@@ -34,8 +36,9 @@ public class CreateSetActivity extends AppCompatActivity {
     TextView btnDescription;
     CardView cardDescription, flashCard;
     ArrayList<FlashCard> listCard = new ArrayList<>();
-    NestedScrollView scrollView;
+    ScrollView scrollView;
     ImageView btnDelete;
+
 
 
     @Override
@@ -56,7 +59,8 @@ public class CreateSetActivity extends AppCompatActivity {
         btnReturn= findViewById(R.id.btnReturn);
         btnDescription= findViewById(R.id.btnDescription);
         cardDescription= findViewById(R.id.cardDescription);
-        //scrollView= findViewById(R.id.scrollView);
+//        scrollView= findViewById(R.id.scrollView);
+//        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         cardAdapter = new CardAdapter(this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
@@ -73,6 +77,7 @@ public class CreateSetActivity extends AppCompatActivity {
                 cardAdapter.addCard();
                 rcvCard.scrollToPosition(listCard.size() - 1);
                 Scroll();
+//                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
         });
         btnSetting.setOnClickListener(new View.OnClickListener() {

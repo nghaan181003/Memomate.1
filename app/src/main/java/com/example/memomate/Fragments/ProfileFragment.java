@@ -37,6 +37,7 @@ import com.example.memomate.Models.User;
 import com.example.memomate.R;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -166,21 +167,32 @@ public class ProfileFragment extends Fragment {
         if (requestCode == 34 && resultCode == 65) {
             String newPassword = data.getStringExtra("newPass");
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            firebaseUser.updatePassword(newPassword)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User");
-                                databaseReference.child(firebaseUser.getUid()).child("passWord").setValue(newPassword, new DatabaseReference.CompletionListener() {
-                                    @Override
-                                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                        Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+            if (firebaseUser != null)
+            {
+                firebaseUser.updatePassword(data.getStringExtra("newPass"))
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getActivity(), "Successful", Toast.LENGTH_SHORT).show();
+                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User");
+                                    databaseReference.child(firebaseUser.getUid()).child("passWord").setValue(data.getStringExtra("newPass"), new DatabaseReference.CompletionListener() {
+                                        @Override
+                                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
                             }
-                        }
-                    });
+                        });
+            }
+
+            firebaseUser.updatePassword(newPassword).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("error", e.getLocalizedMessage());
+                }
+            });
         }
     }
     private void setProfileByEmail() {

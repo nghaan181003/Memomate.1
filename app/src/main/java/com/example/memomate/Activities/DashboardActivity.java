@@ -48,7 +48,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         getFormWidget();
         addEvents();
-        getIntentGG();
+
     }
     private void getFormWidget(){
         // bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_nav);

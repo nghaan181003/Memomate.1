@@ -12,54 +12,47 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.chaos.view.PinView;
+import com.example.memomate.Models.User;
 import com.example.memomate.R;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.BeginSignInResult;
 import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.identity.SignInCredential;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 
@@ -69,7 +62,6 @@ import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -85,6 +77,8 @@ public class LoginActivity extends AppCompatActivity {
     private SignInClient oneTapClient;
     private BeginSignInRequest signUpRequest;
     int requestCode;
+    private static final int GOOGLE_SIGN_IN_REQUEST_CODE = 1001;
+
     //    private static final int REQ_ONE_TAP = 2;  // Can be any integer unique to the Activity.
 //    private boolean showOneTapUI = true;
     @Override
@@ -192,6 +186,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
     public void LoginWithEmail()
     {
         mAuth = FirebaseAuth.getInstance();
@@ -273,9 +268,10 @@ public class LoginActivity extends AppCompatActivity {
         txtOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String senderEmail = "ngochan.tv253@gmail.com";
+                String senderEmail = "memomate915@gmail.com";
                 String receiverEmail = edtEmail.getText().toString();
-                String passWordSenderEmail = "wvypxyjadnlkjgyw";
+//                String passWordSenderEmail = "wvypxyjadnlkjgyw";
+                String passWordSenderEmail = "nimmavbxqzbnadxr";
 
                 Random random = new Random();
                 requestCode = random.nextInt(8999) + 1000;
@@ -319,7 +315,7 @@ public class LoginActivity extends AppCompatActivity {
                     });
                     thread.start();
                     dialog.dismiss();
-                    show_dialog_enter_otp();
+                    showDialogEnterOtp();
 
                 } catch (MessagingException e) {
                     e.printStackTrace();
@@ -361,7 +357,7 @@ public class LoginActivity extends AppCompatActivity {
 
         dialog.show();
     }
-    private void show_dialog_enter_otp()
+    private void showDialogEnterOtp()
     {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -437,22 +433,28 @@ public class LoginActivity extends AppCompatActivity {
                 {
                     String newPassword = edtConfirmPass.getText().toString();
                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                    firebaseUser.updatePassword(newPassword)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User");
-                                        databaseReference.child(firebaseUser.getUid()).child("passWord").setValue(newPassword, new DatabaseReference.CompletionListener() {
-                                            @Override
-                                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                                dialog.dismiss();
-                                            }
-                                        });
+                    if (firebaseUser != null) {
+                        firebaseUser.updatePassword(newPassword)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User");
+                                            databaseReference.child(firebaseUser.getUid()).child("passWord").setValue(newPassword, new DatabaseReference.CompletionListener() {
+                                                @Override
+                                                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                                    dialog.dismiss();
+                                                    Toast.makeText(LoginActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        } else {
+                                            Toast.makeText(LoginActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            });
-
+                                });
+                    } else {
+                        Toast.makeText(LoginActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else
                 {
