@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.memomate.Adapters.NotificationAdapter;
@@ -23,12 +25,13 @@ import com.example.memomate.Fragments.ClassFragment;
 import com.example.memomate.Fragments.HomeFragment;
 import com.example.memomate.Fragments.LibraryFragment;
 import com.example.memomate.Fragments.ProfileFragment;
+import com.example.memomate.Fragments.TabFoldersFragment;
 import com.example.memomate.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class DashboardActivity extends AppCompatActivity {
-    private HomeFragment homeFragment = new HomeFragment();
+    private HomeFragment homeFragment = new HomeFragment(this);
     private ClassFragment classFragment = new ClassFragment();
     private LibraryFragment libraryFragment = new LibraryFragment();
     private ProfileFragment profileFragment = new ProfileFragment();
@@ -105,6 +108,8 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.dismiss();
                 Intent i = new Intent(DashboardActivity.this, CreateFolderActivity.class);
+                String t = "New folder";
+                i.putExtra("title", t);
                 startActivity(i);
             }
         });
@@ -123,6 +128,11 @@ public class DashboardActivity extends AppCompatActivity {
         dialog.getWindow().getAttributes().windowAnimations = com.google.android.material.R.style.Animation_Design_BottomSheetDialog;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getFormWidget();
     }
 
 

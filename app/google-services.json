@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "216430495337",
-    "project_id": "memomate-bb3f8",
-    "storage_bucket": "memomate-bb3f8.appspot.com"
+    "project_number": "623162190803",
+    "project_id": "memomate-bd8be",
+    "storage_bucket": "memomate-bd8be.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:216430495337:android:5026ac57fd24b1136644f8",
+        "mobilesdk_app_id": "1:623162190803:android:751fce44775fec318d5d26",
         "android_client_info": {
           "package_name": "com.example.memomate"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "216430495337-9723qko2nrd6dcf04pis4tb19lhupsl3.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCz8FAuMmXdngOBJd4OtArrGsQ0kfm9vcY"
+          "current_key": "AIzaSyB0OF8XvdgbdrtgHAn9cDlonTR6rgZfYEw"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "216430495337-9723qko2nrd6dcf04pis4tb19lhupsl3.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

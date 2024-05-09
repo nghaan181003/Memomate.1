@@ -3,11 +3,7 @@ package com.example.memomate.Activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -29,11 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.memomate.Adapters.StudySetAdapter;
-import com.example.memomate.Adapters.StudySetRecyclerViewAdapter;
-import com.example.memomate.Fragments.LibraryFragment;
 import com.example.memomate.Fragments.TabFoldersFragment;
-import com.example.memomate.Models.FlashCard;
 import com.example.memomate.Models.Folder;
 import com.example.memomate.Models.StudySet;
 import com.example.memomate.Models.User;
@@ -49,73 +41,98 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
-public class FolderActivity extends AppCompatActivity {
-    ImageButton btnReturn, btnAdd, btnMenu;
-    RecyclerView rcvFolder;
-    ArrayList<StudySet> studySets = new ArrayList<>();
-    CardView cardAddSet;
-    TextView txtTitleFolder, txtQuantity, txtUserName;
-    int currentPos;
-    FirebaseUser firebaseUser;
-    DatabaseReference databaseReference;
+public class EmptyFolderActivity extends AppCompatActivity {
     String id;
     ProgressDialog progressDialog;
+    TextView txtTitleFolder, txtQuantity, txtUserName;
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
+    ArrayList<StudySet> studySets = new ArrayList<>();
+    ImageButton btnReturn, btnAdd, btnMenu;
     ImageView avatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_folder);
+        setContentView(R.layout.activity_empty_folder);
 
-        populateDummyFlashcards();
-        initView();
-        createRecyclerView();
-        getIntentFromFolderAdapter();
+        getFormWidget();
+        addEvents();
+        getIntentFromCreateFolder();
         loadDetailFolder();
         loadAvatar();
         loadUserName();
     }
 
-    private void initView()
-    {
-        btnReturn = findViewById(R.id.btnReturn);
-        btnReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("title_folder_activity", txtTitleFolder.getText().toString());
-                setResult(45, intent);
-                finish();
-            }
-        });
-        btnAdd = findViewById(R.id.btnAdd);
-        btnMenu = findViewById(R.id.btnMenu);
+    private void addEvents() {
+        progressDialog = new ProgressDialog(EmptyFolderActivity.this);
+        progressDialog.setMessage("Please wait a minute");
+
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialogMenu();
             }
         });
-        rcvFolder = findViewById(R.id.rcvFolder);
-        cardAddSet = findViewById(R.id.cardAddSet);
-        cardAddSet.setVisibility(View.GONE);
+        btnReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+    }
+
+    private void getFormWidget() {
         txtTitleFolder = findViewById(R.id.txtTitleFolder);  // Cai nay lay du lieu
         txtQuantity = findViewById(R.id.txtQuantity);
         txtQuantity.setText(String.valueOf(studySets.size()) + " sets");
+        btnMenu = findViewById(R.id.btnMenu);
+        btnReturn = findViewById(R.id.btnReturn);
 
-        rcvFolder = findViewById(R.id.rcvFolder);
-
-        progressDialog = new ProgressDialog(FolderActivity.this);
-        progressDialog.setMessage("Please wait a minute");
-
-        avatar = findViewById(R.id.avatar);
+        btnAdd = findViewById(R.id.btnAdd);
         txtUserName = findViewById(R.id.txtUserName);
+        avatar = findViewById(R.id.avatar);
+
+
     }
 
+    public void getIntentFromCreateFolder()
+    {
+        Intent i = getIntent();
+        id = i.getStringExtra("id_folder");
+    }
+    public void loadDetailFolder()
+    {
+        progressDialog.show();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference("User");
+        if (id!= null)
+        {
+            databaseReference.child(firebaseUser.getUid()).child("list_folder").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Folder folder = snapshot.getValue(Folder.class);
+                    if (folder != null) {
+                        progressDialog.dismiss();
+                        txtTitleFolder.setText(folder.getTitle());
+                        Log.d("title folder", folder.getTitle());
+
+                    }
+                    else Toast.makeText(EmptyFolderActivity.this, "Error to load title", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(EmptyFolderActivity.this, "Error to load title", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else Toast.makeText(this, "error to get title", Toast.LENGTH_SHORT).show();
+    }
     private void showDialogMenu() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -150,10 +167,10 @@ public class FolderActivity extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(FolderActivity.this, EditFolderActivity.class);
-                String title = txtTitleFolder.getText().toString();
-                i.putExtra("idFolder", id);
-                startActivityForResult(i, 70);
+                Intent i = new Intent(EmptyFolderActivity.this, EditFolderActivity2.class);
+                //String title = txtTitleFolder.getText().toString();
+                i.putExtra("idFolderEmpty", id);
+                startActivityForResult(i, 704);
                 dialog.dismiss();
             }
         });
@@ -174,77 +191,17 @@ public class FolderActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void createRecyclerView()
-    {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        rcvFolder.setLayoutManager(linearLayoutManager);
-        StudySetRecyclerViewAdapter studySetAdapter = new StudySetRecyclerViewAdapter(studySets);
-        rcvFolder.setAdapter(studySetAdapter);
-
-    }
-
-    private void populateDummyFlashcards(){
-        ArrayList<FlashCard> flashCards1 = new ArrayList<>();
-        flashCards1.add(new FlashCard("1", "Một"));
-        flashCards1.add(new FlashCard("11", "Một một"));
-        flashCards1.add(new FlashCard("111", "Một một một"));
-
-        ArrayList<FlashCard> flashCards2 = new ArrayList<>();
-        flashCards2.add(new FlashCard("2", "Hai"));
-        flashCards2.add(new FlashCard("22", "Hai hai"));
-        flashCards2.add(new FlashCard("222", "Hai hai hai"));
-        flashCards2.add(new FlashCard("2222", "Hai hai hai hai"));
-
-
-        studySets.add(new StudySet("Toan", R.drawable.han, "ngochandethuong", flashCards1));
-        studySets.add(new StudySet("AV", R.drawable.han, "ngochandethuong", flashCards2));
-    }
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode==70) && (resultCode==71))
+        if ((requestCode==704) && (resultCode==715))
         {
             loadDetailFolder();
         }
     }
-    public void getIntentFromFolderAdapter() {
-        Intent i = getIntent();
-        id = i.getStringExtra("id_title_adapter");
-        //avatarUser.setImageResource(img);
-        //txtUserName.setText(userName);
-        //
-    }
-    public void loadDetailFolder()
-    {
-        progressDialog.show();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("User");
-        if (id!= null)
-        {
-            databaseReference.child(firebaseUser.getUid()).child("list_folder").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Folder folder = snapshot.getValue(Folder.class);
-                    if (folder != null) {
-                        progressDialog.dismiss();
-                        txtTitleFolder.setText(folder.getTitle());
-                        Log.d("title folder", folder.getTitle());
-
-                    }
-                    else Toast.makeText(FolderActivity.this, "Error to load title", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(FolderActivity.this, "Error to load title", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        else Toast.makeText(this, "error to get title", Toast.LENGTH_SHORT).show();
-    }
 
     private void showDialogWarining()
     {
-        final Dialog dialog = new Dialog(FolderActivity.this);
+        final Dialog dialog = new Dialog(EmptyFolderActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_confirm_delete_account);
         Window window = dialog.getWindow();
@@ -284,7 +241,6 @@ public class FolderActivity extends AppCompatActivity {
         });
         dialog.show();
     }
-
     public void deleteFolder()
     {
         databaseReference = FirebaseDatabase.getInstance().getReference("User");
@@ -292,7 +248,7 @@ public class FolderActivity extends AppCompatActivity {
         databaseReference.child(firebaseUser.getUid()).child("list_folder").child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(FolderActivity.this, "Folder deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EmptyFolderActivity.this, "Folder deleted", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -308,7 +264,7 @@ public class FolderActivity extends AppCompatActivity {
                 {
                     progressDialog.dismiss();
                     Uri uri = task.getResult();
-                    setProfilePic(FolderActivity.this, uri, avatar);
+                    setProfilePic(EmptyFolderActivity.this, uri, avatar);
                 }
             }
         });
@@ -330,7 +286,7 @@ public class FolderActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(FolderActivity.this, "ERROR TO GET PROFILE", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EmptyFolderActivity.this, "ERROR TO GET PROFILE", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -338,8 +294,5 @@ public class FolderActivity extends AppCompatActivity {
     {
         Glide.with(context).load(imageUri).apply(RequestOptions.circleCropTransform()).into(avatar);
     }
-
-
-
 
 }

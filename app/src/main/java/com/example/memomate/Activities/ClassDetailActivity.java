@@ -151,11 +151,11 @@ public class ClassDetailActivity extends AppCompatActivity {
     private ArrayList<Folder> getListFolder()
     {
         ArrayList<Folder> data = new ArrayList<>();
-        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
-        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
-        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
-        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
-        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+//        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+//        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+//        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+//        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+//        data.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
         return data;
     }
 }

@@ -47,7 +47,7 @@
                     android:textStyle="bold" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/avatar"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginRight="5dp"
@@ -55,7 +55,7 @@
                     android:src="@drawable/han" />
 
                 <TextView
-                    android:id="@+id/textView32"
+                    android:id="@+id/txtUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

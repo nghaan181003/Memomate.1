@@ -1,7 +1,7 @@
 package com.example.memomate.Models;
 
 public class User {
-    private int avatar;
+    private String avatar;
     private String userName;
     private String email;
     private String passWord;
@@ -9,7 +9,7 @@ public class User {
     public User() {
     }
 
-    public User(int avatar, String userName, String email, String passWord) {
+    public User(String avatar, String userName, String email, String passWord) {
         this.avatar = avatar;
         this.userName = userName;
         this.email = email;
@@ -23,11 +23,11 @@ public class User {
         this.passWord = passWord;
     }
 
-    public int getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(int avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 

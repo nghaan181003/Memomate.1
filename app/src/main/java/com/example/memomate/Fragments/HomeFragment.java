@@ -1,6 +1,7 @@
 package com.example.memomate.Fragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -37,12 +38,21 @@ import com.example.memomate.Models.Notification;
 import com.example.memomate.Models.StudySet;
 import com.example.memomate.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     private ViewPager studySetViewPager, folderViewPager, classViewPager;
     private LinearLayoutManager linearLayoutManager;
+    private Context context;
     private FolderAdapter folderAdapter;
     private ClassAdapter classAdapter;
     private NotificationAdapter notificationAdapter;
@@ -58,6 +68,11 @@ public class HomeFragment extends Fragment {
     ArrayList<Class> classes = new ArrayList<>();
     private Handler slideHandler = new Handler();
 
+    public HomeFragment(Context context)
+    {
+        this.context = context;
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -67,6 +82,7 @@ public class HomeFragment extends Fragment {
         folderSlider();
         classSlider();
         addEvents(view);
+        getListFolderFromFireBase();
     }
 
     @Override
@@ -281,11 +297,11 @@ public class HomeFragment extends Fragment {
     private ArrayList<Folder> getListFolder(){
 
         ArrayList<Folder> folders = new ArrayList<>();
-        folders.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
-        folders.add(new Folder("Xin chao", 2, R.drawable.images, "hoa"));
-        folders.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
-        folders.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
-        folders.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+//        folders.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+//        folders.add(new Folder("Xin chao", 2, R.drawable.images, "hoa"));
+//        folders.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+//        folders.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
+//        folders.add(new Folder("Hello", 2, R.drawable.images, "thanhhoa"));
         return folders;
     }
     private ArrayList<Class> getListClass() {
@@ -297,7 +313,7 @@ public class HomeFragment extends Fragment {
         classes.add(new Class("Hello", 2, 3));
         return classes;
     }
-    private void showNotificationBottomSheetDialog(View view) {
+    private void showNotificationBottomSheetDialog(@NonNull View view) {
 
         final Dialog dialog = new Dialog(view.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -332,5 +348,62 @@ public class HomeFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = com.google.android.material.R.style.Animation_Design_BottomSheetDialog;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    public void getListFolderFromFireBase()
+    {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User");
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference.child(firebaseUser.getUid()).child("list_folder").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Folder folder = snapshot.getValue(Folder.class);
+                if( folder!= null)
+                {
+                    folders.add(folder);
+                    folderAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Folder folder = snapshot.getValue(Folder.class);
+                if (folder == null || folders == null || folders.isEmpty()) return;
+                for (int i=0; i<folders.size();i++)
+                {
+                    if (folder.getId().equals(folders.get(i).getId()))
+                        folders.set(i, folder);
+                }
+
+                folderAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Folder folder = snapshot.getValue(Folder.class);
+
+                if (folder == null || folders == null || folders.isEmpty()) return;
+                for (int i=0; i<folders.size();i++)
+                {
+                    if (Objects.equals(folder.getId(), folders.get(i).getId())) {
+                        folders.remove(folders.get(i));
+                        break;
+                    }
+                }
+                folderAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

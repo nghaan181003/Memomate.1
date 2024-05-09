@@ -3,13 +3,24 @@ package com.example.memomate.Models;
 public class Folder {
     private String title;
     private int quantity;
-    private int avatar;
+    private String avatar;
     private String author;
+    private String description, id;
 
     public Folder() {
     }
+    public Folder(String title, String id, String description) {
+        this.title = title;
+        this.id = id;
+        this.description = description;
+    }
+    public Folder (String title, String description)
+    {
+        this.title= title;
+        this.description= description;
+    }
 
-    public Folder(String title, int quantity, int avatar, String author) {
+    public Folder(String title, int quantity, String avatar, String author) {
         this.title = title;
         this.quantity = quantity;
         this.avatar = avatar;
@@ -32,11 +43,11 @@ public class Folder {
         this.quantity = quantity;
     }
 
-    public int getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(int avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
@@ -46,5 +57,21 @@ public class Folder {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

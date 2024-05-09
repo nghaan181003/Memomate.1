@@ -1,33 +1,49 @@
 package com.example.memomate.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.memomate.Activities.CreateFolderActivity;
+import com.example.memomate.Activities.CreateSetActivity;
+import com.example.memomate.Activities.CreateClassActivity;
+import com.example.memomate.Activities.CreateFolderActivity;
+import com.example.memomate.Activities.CreateSetActivity;
 import com.example.memomate.Adapters.TabPagerAdapter;
+import com.example.memomate.Models.StudySet;
 import com.example.memomate.R;
 import com.google.android.material.tabs.TabLayout;
 
 public class LibraryFragment extends Fragment {
     private ViewPager viewPager;
-    private TabLayout tabLayout;
+    public TabLayout tabLayout;
     private TabPagerAdapter tabPagerAdapter;
+    private ImageButton btnCreate;
+    int currTab = 0;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        tabLayout = view.findViewById(R.id.tabLayout);
+        viewPager = view.findViewById(R.id.view_pager);
+
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                currTab = tab.getPosition();
             }
 
             @Override
@@ -40,10 +56,26 @@ public class LibraryFragment extends Fragment {
 
             }
         });
+        btnCreate = view.findViewById(R.id.btnCreate);
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currTab == 0)
+                {
+                    Intent A = new Intent(view.getContext(), CreateSetActivity.class);
+                    startActivity(A);
+                }
+                else {
+                    Intent A = new Intent(view.getContext(), CreateFolderActivity.class);
+                    startActivity(A);
+                }
+
+            }
+        });
     }
 
     private void setUpViewPager(ViewPager viewPager) {
-        TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(getChildFragmentManager());
+        tabPagerAdapter = new TabPagerAdapter(getChildFragmentManager());
         tabPagerAdapter.addFragment(new TabStudySetsFragment());
         tabPagerAdapter.addFragment(new TabFoldersFragment());
 
@@ -60,6 +92,7 @@ public class LibraryFragment extends Fragment {
         return view;
     }
     public void switchToTab(int position){
-        tabLayout.getChildAt(position).isSelected();
+        tabPagerAdapter.getItem(2);
+
     }
 }

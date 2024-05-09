@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.memomate.Fragments.TabFoldersFragment;
+
 import java.util.ArrayList;
 
 public class TabPagerAdapter extends FragmentPagerAdapter {

@@ -159,8 +159,6 @@ public class ProfileFragment extends Fragment {
         });
 
     }
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -174,7 +172,6 @@ public class ProfileFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(getActivity(), "Successful", Toast.LENGTH_SHORT).show();
                                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User");
                                     databaseReference.child(firebaseUser.getUid()).child("passWord").setValue(data.getStringExtra("newPass"), new DatabaseReference.CompletionListener() {
                                         @Override
@@ -183,6 +180,9 @@ public class ProfileFragment extends Fragment {
                                         }
                                     });
                                 }
+                                else
+                                    Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+
                             }
                         });
             }
@@ -323,6 +323,7 @@ public class ProfileFragment extends Fragment {
                         Toast.makeText(getActivity(), "User account deleted", Toast.LENGTH_SHORT).show();
                     }
                 });
+
                 firebaseUser.delete();
                 dialog.dismiss();
                 Intent i = new Intent(getActivity(), IntroActivity.class);
@@ -339,6 +340,7 @@ public class ProfileFragment extends Fragment {
     {
         progressDialog.show();
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d("Profile picture", "profile" + selectedImageUri);
         if (selectedImageUri != null)
         {
             //FirebaseStorage firebaseStorage =  FirebaseStorage.getInstance().getReference("profile_pic");
@@ -349,10 +351,14 @@ public class ProfileFragment extends Fragment {
                     {
                         progressDialog.dismiss();
                     }
+                    else
+                        Toast.makeText(getActivity(), "Can't upload profile", Toast.LENGTH_SHORT).show();
 
                 }
             });
+
         }
+
     }
     public void getProfileImgFromStorage()
     {
@@ -364,6 +370,8 @@ public class ProfileFragment extends Fragment {
                 {
                     Uri uri = task.getResult();
                     setProfilePic(getContext(), uri, imgAvatar);
+                    String imgUri = uri.toString();
+                    FirebaseDatabase.getInstance().getReference("User/"+firebaseUser.getUid()).child("avatar").setValue(imgUri);
                 }
             }
         });

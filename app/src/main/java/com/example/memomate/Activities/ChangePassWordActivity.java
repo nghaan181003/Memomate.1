@@ -133,7 +133,6 @@ public class ChangePassWordActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        // Xử lý lỗi khi truy vấn dữ liệu
                         Log.e("Firebase", "Error " + databaseError.getMessage());
                     }
                 });

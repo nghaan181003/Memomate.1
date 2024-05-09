@@ -27,6 +27,7 @@
                 android:layout_weight="9"
                 android:textAlignment="center"/>
             <ImageButton
+                android:id="@+id/btnCreate"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:background="@null"

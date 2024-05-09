@@ -3,26 +3,44 @@ package com.example.memomate.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.memomate.Activities.FolderActivity;
 import com.example.memomate.Models.Folder;
+import com.example.memomate.Models.StudySet;
+import com.example.memomate.Models.User;
 import com.example.memomate.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 
 public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecyclerViewAdapter.FolderViewHolder> {
     Context context;
     ArrayList<Folder> listFolder;
+    StudySet studySet;
+
     public FolderRecyclerViewAdapter(Context context)
     {
         this.context = context;
@@ -35,9 +53,6 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
     public void setData(ArrayList<Folder> list) {
         this.listFolder = list;
         notifyDataSetChanged();
-    }
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("MyAdapter", "onActivityResult");
     }
     @NonNull
     @Override
@@ -54,24 +69,71 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
         {
             return;
         }
-        holder.avatar.setImageResource(folder.getAvatar());
-        holder.userName.setText(folder.getAuthor());
-        holder.txtTitleFolder.setText(folder.getTitle());
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseStorage.getInstance().getReference().child("profile_pic").child(firebaseUser.getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful())
+                {
+                    Uri uri = task.getResult();
+                    setProfilePic(((Activity)context), uri, holder.avatar);
+                }
+            }
+        });
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User");
+        databaseReference.child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if (user != null) {
+                    holder.userName.setText(user.getUserName());
+
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText((Activity)context, "ERROR TO GET PROFILE", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //Glide.with(holder.cardFolder).load(user.getAvatar()).into(holder.avatar);
+        //holder.userName.setText(folder.getAuthor());
+
         holder.term.setText(String.valueOf(folder.getQuantity()) + " sets");
+        holder.txtTitleFolder.setText(folder.getTitle());
 
         holder.cardFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, FolderActivity.class);
-                i.putExtra("getTitle", folder.getTitle());
-                i.putExtra("getAvatar", folder.getAvatar());
-                i.putExtra("getUserName", folder.getAuthor());
-                i.putExtra("position", holder.getAdapterPosition());
+                i.putExtra("id_title_adapter", folder.getId());
                 ((Activity)context).startActivityForResult(i, 12);
                 //context.startActivity(i);
-
             }
         });
+
+//        if (folder.getId()!= null)
+//        {
+//            databaseReference.child(firebaseUser.getUid()).child("list_folder").child(folder.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    Folder folder = snapshot.getValue(Folder.class);
+//                    if (folder != null) {
+//                        holder.txtTitleFolder.setText(folder.getTitle());
+//                        Log.d("title folder", folder.getTitle());
+//
+//                    }
+//                    else Toast.makeText((Activity)context, "Error to load title", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    Toast.makeText((Activity)context, "Error to load title", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
+//        else Toast.makeText((Activity)context, "error to get title", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -95,5 +157,10 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
             userName = itemView.findViewById(R.id.userName);
             cardFolder = itemView.findViewById(R.id.cardFolder);
         }
+    }
+
+    public void setProfilePic(Context context, Uri imageUri, ImageView avatar)
+    {
+        Glide.with(context).load(imageUri).apply(RequestOptions.circleCropTransform()).into(avatar);
     }
 }
